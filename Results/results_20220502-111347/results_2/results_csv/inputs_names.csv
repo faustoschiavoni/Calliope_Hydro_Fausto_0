@@ -1,0 +1,46 @@
+techs,names
+demand_waterC,Water demand3
+demand_waterA,Water demand1
+PV,PV
+ElectricTransmission220kV,ElectricTransmission220kV
+ElectricTransmission132kV,ElectricTransmission132kV
+ConversionPlusC,from waterC to hpC
+HFO,HFO
+Wind,Wind
+supply_waterD,inflow_Cahora
+hydroC,Kariba
+Nuclear,Nuclear
+spillageB,spillageKafueGorge
+storageA,ITT
+supply_waterB,inflow_KafueGorge
+hydroB,KafueGorge
+spillageA,spillageITT color: 
+ElectricTransmission275kV,ElectricTransmission275kV
+hydroD,Cahora
+supply_waterA,inflow_ITT
+supply_waterC,inflow_Kariba
+supply_water0,inflow_VF
+WaterCTransmission,WaterCTransmission
+Biomass,Biomass
+spillageC,spillageKariba
+ElectricTransmission533kV,ElectricTransmission533kV
+OCGT,OCGT
+storageC,Kariba
+ConversionPlus0,from water0 to hp0
+ConversionPlusB,from waterB to hpB
+DieselEngine,DieselEngine
+WaterDTransmission,WaterDTransmission
+ElectricTransmission330kV,ElectricTransmission330kV
+hydro,Hydro
+hydroA,ITT
+ConversionPlusA,from waterA to hpA
+storageD,Cahora
+demand_waterB,Water demand2
+hydro0,VictoriaFalls
+demand_power,Power demand
+GasEngine,GasEngine
+Coal,Coal
+ElectricTransmission400kV,ElectricTransmission400kV
+spillageD,spillageKariba
+Coal_old,Coal_old
+storageB,KafueGorge

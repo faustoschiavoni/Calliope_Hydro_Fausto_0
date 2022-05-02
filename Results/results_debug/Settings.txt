@@ -1,0 +1,13 @@
+[Settings]
+speedy = False
+spillage_fausto = True
+plotting_fa = True
+restore_original_timeseries = True
+plot = False
+summary = False
+save = True
+save_settings = True
+verbosity = INFO
+spillage_percentage = 0.95
+iterations = 2
+Time spent to run the script (days, h:m:s): 5:16:26.580265

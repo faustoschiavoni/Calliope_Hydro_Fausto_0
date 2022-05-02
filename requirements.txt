@@ -1,0 +1,6 @@
+# calliope==0.6.5
+calliope==0.6.6-post1
+openpyxl
+matplotlib
+pandas
+plotly

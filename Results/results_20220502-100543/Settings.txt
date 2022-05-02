@@ -1,0 +1,18 @@
+[Settings]
+debug = False
+spillage_fausto = True
+plotting_fa = True
+restore_original_timeseries = True
+plot = False
+summary = False
+save = True
+save_settings = True
+send_mail = True
+verbosity = INFO
+spillage_percentage = 0.95
+iterations = 2
+[Other Infos]
+name of the results' directory:Results/results_20220502-100543 
+Time spent to run the script (days, h:m:s): 0:48:30.244137
+Calliope_Hydro.py was executed with "PyCharm debugger" (if "False" the script was just "run", without the debugger): False
+System which run the script: uname_result(system='Windows', node='DESKTOP-GBUU047', release='10', version='10.0.19044', machine='AMD64')
