@@ -113,7 +113,7 @@ techs:
 
       spillageA:
            essentials:
-                name: 'spillageITT
+                name: 'spillageITT'
                 color: '#FFAE02'
                 parent: conversion
                 carrier_in: waterA
@@ -369,5 +369,3 @@ techs:
                 color: '#BD07FB'
                 parent: demand
                 carrier: water3  
-      
-                      

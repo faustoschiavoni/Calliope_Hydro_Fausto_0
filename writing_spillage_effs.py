@@ -1,4 +1,3 @@
-
 with open("Timeseries/evapLoss_KA.txt", "r") as testo:
 
     linee = testo.readlines()

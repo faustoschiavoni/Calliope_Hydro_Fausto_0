@@ -238,7 +238,9 @@ if save_settings or send_mail:
                   f'\nCalliope_Hydro.py was executed with "PyCharm debugger" ' \
                   f'(if "False" the script was just "run", without the debugger): ' \
                   f'{True if sys.gettrace() else False}' \
-                  f'\nSystem which run the script: {platform.uname()}'
+                  f'\nSystem which run the script: {platform.uname()}' \
+                  f'\n(Guess on the system which run the script: ' \
+                  f'{"work station SESAM" if platform.uname()[1] == "DESKTOP-GBUU047" else "NOT work station SESAM"})'
     nl = '\n'
 if save_settings:
     with open(f'{results_dir_general}/Settings.txt', 'w') as outfile:
