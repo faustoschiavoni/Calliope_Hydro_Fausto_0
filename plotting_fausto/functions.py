@@ -155,6 +155,72 @@ def plot_storage(model_data, lslice=None, rslice=None, show_storage_cap_max=True
 
 
 # Fa
+def plot_storage_and_carriers_and_eff(model_data, lslice=None, rslice=None, frmt='svg', save=True, path='Results',
+                                      exist_ok=True, spillage_coeff=0.95, show=False):
+
+    colors = ['orange', 'blue', 'cyan', 'green']
+    colors_2 = ['#46FF28', '#000000']  # acid green, black
+    eff_color = '#FF0000'  # red
+    markersize_eff = 1
+
+    nrows = 2
+    ncols = 4
+    fig2, axes = plt.subplots(nrows=nrows, ncols=ncols, constrained_layout=True)
+    # fig2.set_size_inches(12, 14)
+    locs_techs_new = arrange_techs_properly(model_data)
+    plot_index = 0
+    for loc_tech in locs_techs_new:
+        if isinstance(lslice and rslice, int) and lslice != rslice:
+            model_data.data_vars['storage'][loc_tech, lslice:rslice].plot(color=colors[plot_index],
+                                                                          ax=axes.flatten()[plot_index])
+        elif lslice is None and rslice is None:
+            model_data.data_vars['storage'][loc_tech, :].plot(color=colors[plot_index],
+                                                              ax=axes.flatten()[plot_index])
+        axes.flatten()[plot_index].axhline(y=model_data.data_vars['storage_cap_max'][loc_tech].values,
+                                           color='k', linestyle='-', label='Storage_cap_max')
+        axes.flatten()[plot_index].axhline(y=model_data.data_vars['storage_cap'][loc_tech].values,
+                                           color='r', linestyle='-', label='Storage_cap')
+        axes.flatten()[plot_index].axhline(y=spillage_coeff * model_data.data_vars['storage_cap'][loc_tech].values,
+                                           color='magenta', linestyle='--', label='Spillage_threshold')
+        plot_index += 1
+
+    carriers_indexes = [('Zambia::spillageA::waterB', 'Zambia::spillageA::waterA', 'Zambia::spillageA'),  # (carrier_prod, carrier_con, eff) coordinates
+                        ('Zambia::spillageB::waterD', 'Zambia::spillageB::waterB', 'Zambia::spillageB'),
+                        ('Zambia::spillageC::waterD', 'Zambia::spillageC::waterC', 'Zambia::spillageC'),
+                        ('Moz-North-Center::spillageD::waterE', 'Moz-North-Center::spillageD::waterD', 'Moz-North-Center::spillageD')]
+
+    for indx in carriers_indexes:
+        carrier_prod = model_data.carrier_prod.loc[indx[0]]
+        carrier_con = model_data.carrier_con.loc[indx[1]]
+        tech_eff = model_data.energy_eff.loc[indx[2]]
+
+        carrier_con.plot(color=colors_2[0], ax=axes.flatten()[plot_index], label='Carrier_con')
+        y_min_con, y_max_con = carrier_con.min().values, carrier_con.max().values
+
+        carrier_prod.plot(color=colors_2[1], ax=axes.flatten()[plot_index], label='Carrier_prod')
+        y_min_prod, y_max_prod = carrier_prod.min().values, carrier_prod.max().values
+
+        rescaled_unitary_eff = (max(y_max_con, y_max_prod) + min(y_min_con, y_min_prod)) / 2
+        tech_eff *= rescaled_unitary_eff
+        tech_eff.plot(color=eff_color, ax=axes.flatten()[plot_index], label='Eff_scaled',
+                      markersize=markersize_eff, linestyle='', marker='*')
+
+        plot_index += 1
+
+    plt.legend(bbox_to_anchor=(1.04, 1), loc="upper left")
+    # fig2.set_size_inches(12, 9)
+    fig2.set_size_inches(18, 11)
+
+    if save:
+        os.makedirs(path, exist_ok=exist_ok)
+        plt.savefig(f'{path}/Summary_storage_carriers.{frmt}', format=f'{frmt}', dpi=300,)
+
+    if show:
+        plt.show()
+        plt.close()
+
+
+# Fa
 def check_spillage():
     pass
 

@@ -1,4 +1,4 @@
-from plotting_fausto.functions import check_folder, check_if_model_calliope, to_excel, plot_storage
+from plotting_fausto.functions import check_folder, check_if_model_calliope, to_excel, plot_storage, plot_storage_and_carriers_and_eff
 from plotting_fausto import exceptions
 
 
@@ -23,3 +23,6 @@ class FaPlotting:
     def plot_storage_timeseries(self, *args, **kwargs):
         # write_excel()
         plot_storage(self._model_data, *args, **kwargs)
+
+    def plot_storage_and_carriers(self, *args, **kwargs):
+        plot_storage_and_carriers_and_eff(self._model_data, *args, **kwargs)

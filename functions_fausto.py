@@ -1,5 +1,8 @@
 import datetime
 import smtplib
+import shutil
+import glob
+import os
 
 
 def notify_via_email(mex):
@@ -25,6 +28,19 @@ def notify_via_email(mex):
 
 def compare_storage_of_two_calliope_models(calliope_model_1, calliope_model_2, path_model_1, path_model_2):
 
+    '''
+    Esempio di utilizzo della funzione:
+
+    percorso_modello_1 = 'Results/results_20220428-165545_nospillage/results_1/model.nc'
+    percorso_modello_2 = 'Results/results_20220502-130204/results_1/model.nc'
+
+    model1 = calliope.read_netcdf(percorso_modello_1)
+    model2 = calliope.read_netcdf(percorso_modello_2)
+
+
+    compare_storage_of_two_calliope_models(model1, model2, percorso_modello_1, percorso_modello_2)
+    '''
+
     locs_techs_ordered = ['Zambia::storageA', 'Zambia::storageB', 'Zambia::storageC', 'Moz-North-Center::storageD']
     bool_list = []
     mex = []
@@ -48,3 +64,90 @@ def compare_storage_of_two_calliope_models(calliope_model_1, calliope_model_2, p
 
     print(f'{"ALL EQUAL" if all(bool_list) else "NOT ALL EQUAL"}\n', *mex, sep='\n')
 
+
+def create_right_files():
+
+    for ii in ['CB', 'ITT', 'KA', 'KG']:
+        with open(f"Timeseries_original_updated_with_positives/evapLoss_{ii}.txt", "r") as testo:
+
+            linee = testo.readlines()
+
+            blocca_alla_riga = 10e100  # 3
+
+            numerii, timestamps = [], []
+            for numero, gee in enumerate(linee):
+
+                if numero == 0:
+                    header = gee
+                    continue  # salto le intestazioni
+
+                # print(gee[20:])
+                # numerii.append(float(gee[20:-2]))
+
+                numerii.append(gee[20:-1])
+                timestamps.append(gee[:20])
+
+                if numero == blocca_alla_riga:
+                    print(numerii, timestamps, type(numerii[1]))
+                    break
+
+        listone = list(map(float, numerii))
+        listariella = list(map(lambda x: str(abs(x)*10e3), listone))
+        # print(listone, type(listone[0]))
+
+        with open(f"Timeseries_original_updated_with_positives/evapLoss_{ii}.txt", "w") as testo2:
+
+            testo2.writelines(header)
+
+            for gino in range(len(numerii)):
+
+                testo2.writelines(timestamps[gino] + listariella[gino] + '\n')
+
+    shutil.copytree("Timeseries/Initialize_Loop", "PROVADIR_2", dirs_exist_ok=True)
+
+
+def writing_spillage_effs():
+    with open("Timeseries/evapLoss_KA.txt", "r") as testo:
+
+        linee = testo.readlines()
+
+        blocca_alla_riga = 10e100  # 3  # to debug
+
+        numerii, timestamps = [], []
+        for numero, gee in enumerate(linee):
+
+            if numero == 0:
+                header = gee
+                continue  # salvate le le intestazioni
+
+            timestamps.append(gee[:20])
+
+            if numero == blocca_alla_riga:
+                print(numerii, timestamps, type(numerii[1]))
+                break
+
+    for ii in ['A', 'B', 'C', 'D']:  # ci sono 4 tecnologie di spillage (A, B, C, D) tra la Zambia e il Mozambico
+        with open(f"Timeseries/spillage{ii}_eff.txt", "w") as testo2:
+
+            if ii == 'D':
+                testo2.writelines(header.replace('Zambia', 'Moz-North-Center'))
+            else:
+                testo2.writelines(header)
+
+            for gino in range(len(timestamps)):
+                testo2.writelines(timestamps[gino] + '0' + '\n')
+
+
+def get_latest_file_or_folder_from_directory(directory: str, last=-1):
+    '''
+    Returns the "last"th-latest file/folder (modified/created) in a directory of folders (if last=-1 is the latest)
+    '''
+
+    list_of_folders = glob.glob(directory.strip(r"\ /") + '/*')  # * means all, if needed a specific format then *.csv
+
+    # list_of_folders.remove('Results\\results_debug')
+    # latest_folder = max(list_of_folders, key=os.path.getctime)
+
+    latest_folder = sorted(list_of_folders, key=os.path.getctime)[last]
+
+    return latest_folder

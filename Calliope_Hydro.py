@@ -82,6 +82,7 @@ for iteration in range(iterations):
         plots_folder = f"{results_folder}/plots"
         plotting.FaPlotting(model).write_excel(path=plots_folder, exist_ok=False)
         plotting.FaPlotting(model).plot_storage_timeseries(path=plots_folder, spillage_coeff=spillage_percentage)
+        plotting.FaPlotting(model).plot_storage_and_carriers(path=plots_folder, spillage_coeff=spillage_percentage)
 
     if not debug and iterations != 1 and iteration != iterations - 1:
         # create identical dataframes for the new variables that I'm going to create to be updated in cleaner code
