@@ -53,8 +53,7 @@ config.read_file(open("Calliope_Hydro_config.conf"))
 spillage_percentage = config.getfloat('Settings', 'spillage_percentage')
 
 
-plotting.FaPlotting(model).plot_storage_and_carriers(show=True, save=True,
+plotting.FaPlotting(model).plot_storage_and_carriers(show=True, save=False,
                                                      path=plots_folder, spillage_coeff=spillage_percentage)
 
 # creare questo grafico per ogni "results" in Results (magari prima copio anche quelli da 4 iterazioni)
-
