@@ -68,7 +68,6 @@ for iteration in range(iterations):
                      'evapLoss_CB.txt', 'evapLoss_ITT.txt', 'evapLoss_KA.txt', 'evapLoss_KG.txt']:
             shutil.copy(f'Timeseries/{file}', folder_timeseries)
 
-    # Lama donna
     if debug:
         model = calliope.read_netcdf('Results/results_debug/results_1/model.nc')
     else:

@@ -192,7 +192,7 @@ techs:
                 energy_cap_equals: 100000000000 
 
 #Kariba
-      supply_waterC: #
+      supply_waterC:
            essentials:
                 name: 'inflow_Kariba'
                 color: '#0287FF'
