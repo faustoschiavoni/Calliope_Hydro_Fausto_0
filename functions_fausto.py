@@ -151,3 +151,19 @@ def get_latest_file_or_folder_from_directory(directory: str, last=-1):
     latest_folder = sorted(list_of_folders, key=os.path.getctime)[last]
 
     return latest_folder
+
+
+def apply_plot_function_to_all_results():
+    import calliope
+    from plotting_fausto import plotting
+
+    all_results = []
+    for folders in glob.glob('Results/*'):
+        for folder in glob.glob(f'{folders}/*'):
+            (all_results.append(folder) if folder[-4:] != '.txt' else None)
+
+    for result in all_results:
+        model = calliope.read_netcdf(f'{result}\\model.nc')
+        plots_folder = f'{result}\\plots\\'
+
+        plotting.FaPlotting(model).plot_storage_and_carriers(path=plots_folder)

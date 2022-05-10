@@ -151,7 +151,7 @@ def plot_storage(model_data, lslice=None, rslice=None, show_storage_cap_max=True
         if show_subs:
             # plt.tight_layout()
             plt.show()
-            plt.close()
+        plt.close()
 
 
 # Fa
@@ -226,7 +226,7 @@ def plot_storage_and_carriers_and_eff(model_data, lslice=None, rslice=None, frmt
 
     if show:
         plt.show()
-        plt.close()
+    plt.close()
 
 
 # Fa
