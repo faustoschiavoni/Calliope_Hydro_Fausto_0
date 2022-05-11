@@ -157,7 +157,8 @@ def plot_storage(model_data, lslice=None, rslice=None, show_storage_cap_max=True
 # Fa
 def plot_storage_and_carriers_and_eff(model_data, lslice=None, rslice=None, frmt='svg', save=True, path='Results',
                                       exist_ok=True, spillage_coeff=0.95, show=False, sharexaxis=True):
-
+    plt.rcParams['axes.grid'] = True
+    plt.rc('grid', color='#686868', linestyle='--', linewidth=0.5)
     colors = ['orange', 'blue', 'cyan', 'green']
     colors_2 = ['#46FF28', '#000000']  # acid green, black
     eff_color = '#FF0000'  # red
@@ -178,11 +179,13 @@ def plot_storage_and_carriers_and_eff(model_data, lslice=None, rslice=None, frmt
             lines2d_1.append(model_data.data_vars['storage'][loc_tech, :].rename('').plot(color=colors[plot_index],
                                                                                           ax=axes.flatten()[plot_index])[0])
         lines2d_1.append(axes.flatten()[plot_index].axhline(y=model_data.data_vars['storage_cap_max'][loc_tech].values,
-                                                            color='k', linestyle='-', label='Strg_cap_max'))
+                                                            color='k', linestyle='-', label='Storage_cap_max'))
         lines2d_1.append(axes.flatten()[plot_index].axhline(y=model_data.data_vars['storage_cap'][loc_tech].values,
                                                             color='r', linestyle='-', label='Storage_cap'))
         lines2d_1.append(axes.flatten()[plot_index].axhline(y=spillage_coeff * model_data.data_vars['storage_cap'][loc_tech].values,
                                                             color='magenta', linestyle='--', label='Spillage_threshold'))
+        new_title = axes.flatten()[plot_index].get_title().split(' = ')[1]
+        axes.flatten()[plot_index].set_title(new_title)
         plot_index += 1
 
     carriers_indexes = [('Zambia::spillageA::waterB', 'Zambia::spillageA::waterA', 'Zambia::spillageA'),  # (carrier_prod, carrier_con, eff) coordinates
@@ -206,7 +209,8 @@ def plot_storage_and_carriers_and_eff(model_data, lslice=None, rslice=None, frmt
         tech_eff *= rescaled_unitary_eff
         lines2d_2.append(tech_eff.rename('').plot(color=eff_color, ax=axes.flatten()[plot_index], label='Eff_scaled',
                                                   markersize=markersize_eff, linestyle='', marker='*')[0])
-
+        new_title = axes.flatten()[plot_index].get_title().split(' = ')[1]
+        axes.flatten()[plot_index].set_title(new_title)
         plot_index += 1
 
     legend1 = plt.legend(lines2d_1[1:4], [l1.get_label() for l1 in lines2d_1[1:4]], bbox_to_anchor=(1.01, 2.1),
@@ -218,6 +222,7 @@ def plot_storage_and_carriers_and_eff(model_data, lslice=None, rslice=None, frmt
 
     # plt.legend(bbox_to_anchor=(1.04, 1), loc="upper left")
     # fig2.supylabel(None)
+    # plt.subplots_adjust(hspace=.0)  # delete vertical space between plots
     fig2.set_size_inches(18, 11)
 
     if save:

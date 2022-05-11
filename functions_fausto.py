@@ -159,8 +159,9 @@ def apply_plot_function_to_all_results():
 
     all_results = []
     for folders in glob.glob('Results/*'):
-        for folder in glob.glob(f'{folders}/*'):
-            (all_results.append(folder) if folder[-4:] != '.txt' else None)
+        if folders != 'Results\\results_debug':  # excluding the results_debug folder
+            for folder in glob.glob(f'{folders}/*'):
+                (all_results.append(folder) if folder[-4:] != '.txt' else None)
 
     for result in all_results:
         model = calliope.read_netcdf(f'{result}\\model.nc')
