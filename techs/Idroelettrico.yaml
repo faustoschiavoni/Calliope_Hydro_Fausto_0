@@ -120,6 +120,9 @@ techs:
                 carrier_out: waterB
            constraints:
                 energy_cap_equals: 100000000000 #fake capacità per essere sicuri che riesca ad elaborare tutta l'acqua
+           costs:
+                monetary:
+                     om_con: 0.01
 
 
 #Kafue Gorge
@@ -189,7 +192,10 @@ techs:
                 carrier_in: waterB
                 carrier_out: waterD
            constraints:
-                energy_cap_equals: 100000000000 
+                energy_cap_equals: 100000000000
+           costs:
+                monetary:
+                     om_con: 0.01
 
 #Kariba
       supply_waterC:
@@ -257,7 +263,10 @@ techs:
                 carrier_in: waterC
                 carrier_out: waterD
            constraints:
-                energy_cap_equals: 100000000000                      
+                energy_cap_equals: 100000000000
+           costs:
+                monetary:
+                     om_con: 0.01
  
 #Cahora
 
@@ -313,7 +322,11 @@ techs:
                 carrier_in: waterD
                 carrier_out: waterE
            constraints:
-                energy_cap_equals: 100000000000                      
+                energy_cap_equals: 100000000000
+           costs:
+                monetary:
+                     om_con: 0.01
+
  
       # storage3: #necessario? forse no, sicuramente serve uba water demand3
            # essentials: 
