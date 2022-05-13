@@ -1,8 +1,6 @@
 import datetime
 import smtplib
 import shutil
-import glob
-import os
 
 
 def notify_via_email(mex):
@@ -29,8 +27,9 @@ def notify_via_email(mex):
 def compare_storage_of_two_calliope_models(calliope_model_1, calliope_model_2, path_model_1, path_model_2):
 
     '''
-    Esempio di utilizzo della funzione:
-
+    # Esempio di utilizzo della funzione:
+    import calliope
+    from functions_fausto import compare_storage_of_two_calliope_models
     percorso_modello_1 = 'Results/results_20220428-165545_nospillage/results_1/model.nc'
     percorso_modello_2 = 'Results/results_20220502-130204/results_1/model.nc'
 
@@ -142,6 +141,8 @@ def get_latest_file_or_folder_from_directory(directory: str, last=-1):
     '''
     Returns the "last"th-latest file/folder (modified/created) in a directory of folders (if last=-1 is the latest)
     '''
+    import glob
+    import os
 
     list_of_folders = glob.glob(directory.strip(r"\ /") + '/*')  # * means all, if needed a specific format then *.csv
 
@@ -156,6 +157,7 @@ def get_latest_file_or_folder_from_directory(directory: str, last=-1):
 def apply_plot_function_to_all_results():
     import calliope
     from plotting_fausto import plotting
+    import glob
 
     all_results = []
     for folders in glob.glob('Results/*'):
@@ -168,3 +170,99 @@ def apply_plot_function_to_all_results():
         plots_folder = f'{result}\\plots\\'
 
         plotting.FaPlotting(model).plot_storage_and_carriers(path=plots_folder)
+
+
+def compare_multiple_calliope_models(*args):
+    for model in args[1:]:
+        if not model.equals(args[0]):
+            print('The models analyzed are NOT ALL equal.')
+            break
+        else:
+            print('ALL models are equal.')
+
+
+def get_equal_calliope_models(directory):
+    import calliope
+    import os
+    import glob
+
+    flag_finish = True
+    some_equal = False
+    mdl = '\\model.nc'
+    equal_models = []
+    list_results = [f for f in glob.glob(directory.strip(r"\ /") + '/*') if f != 'Results\\results_debug']
+    while flag_finish:
+        results_left_to_b_compared = list(filter(lambda x: x not in equal_models, list_results))
+        if len(results_left_to_b_compared) > 1:
+            first_to_comp = results_left_to_b_compared[0]
+            first_results = [os.path.join(first_to_comp, rslt) for rslt in os.listdir(first_to_comp) if os.path.isdir(os.path.join(first_to_comp, rslt))]
+            first_num_results = len(first_results)
+
+            temporarily_equals = [first_to_comp]
+            for i in results_left_to_b_compared[1:]:
+                i_results = [os.path.join(i, rslt) for rslt in os.listdir(i) if os.path.isdir(os.path.join(i, rslt))]
+                i_num_results = len(i_results)
+                if i_num_results != first_num_results:
+                    continue  # if they don't even have the same number of results (results_1, results_2..) continue
+                what_to_check = [(j + mdl, u + mdl) for u in i_results for j in first_results if u.endswith(j[-9:])]
+                for en, wtc in enumerate(what_to_check):
+                    model1 = calliope.read_netcdf(wtc[0])
+                    model2 = calliope.read_netcdf(wtc[1])
+                    if not model1._model_data.equals(model2._model_data):  # TODO: maybe just compare the storage...
+                        break
+                    if en == len(what_to_check):
+                        equal_models.append(i)
+                        temporarily_equals.append(i)
+            if len(temporarily_equals) > 1:
+                some_equal = True
+                print(f'{*temporarily_equals,} models are equal.')
+            list_results.remove(first_to_comp)
+        else:
+            flag_finish = False
+
+    if not some_equal:
+        print(f'Results where ALL different!')
+
+
+def get_equal_storage_in_results(directory):
+    import calliope
+    import os
+    import glob
+
+    flag_finish = True
+    some_equal = False
+    mdl = '\\model.nc'
+    equal_models = []
+    list_results = [f for f in glob.glob(directory.strip(r"\ /") + '/*') if f != 'Results\\results_debug']
+    while flag_finish:
+        results_left_to_b_compared = list(filter(lambda x: x not in equal_models, list_results))
+        if len(results_left_to_b_compared) > 1:
+            first_to_comp = results_left_to_b_compared[0]
+            first_results = [os.path.join(first_to_comp, rslt) for rslt in os.listdir(first_to_comp) if
+                             os.path.isdir(os.path.join(first_to_comp, rslt))]
+            first_num_results = len(first_results)
+
+            temporarily_equals = [first_to_comp]
+            for i in results_left_to_b_compared[1:]:
+                i_results = [os.path.join(i, rslt) for rslt in os.listdir(i) if os.path.isdir(os.path.join(i, rslt))]
+                i_num_results = len(i_results)
+                if i_num_results != first_num_results:
+                    continue  # if they don't even have the same number of results (results_1, results_2..) continue
+                what_to_check = [(j + mdl, u + mdl) for u in i_results for j in first_results if u.endswith(j[-1])]
+                for en, wtc in enumerate(what_to_check):
+                    model1 = calliope.read_netcdf(wtc[0])
+                    model2 = calliope.read_netcdf(wtc[1])
+                    if not model1._model_data['storage'].loc['Zambia::storageA'].equals(model2._model_data['storage'].loc['Zambia::storageA']):  # FIXME: comparison of the whole storage is needed
+                        break
+                    if en == len(what_to_check) - 1:
+                        equal_models.append(i)
+                        temporarily_equals.append(i)
+                        some_equal = True
+            if len(temporarily_equals) > 1:
+                print(f'{*temporarily_equals,} models are equal.')
+            list_results.remove(first_to_comp)
+        else:
+            flag_finish = False
+
+    if not some_equal:
+        print(f'Results where ALL different!')
