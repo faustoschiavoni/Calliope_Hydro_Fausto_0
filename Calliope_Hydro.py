@@ -39,6 +39,7 @@ if __name__ == "__main__":
     send_mail = config.getboolean('Settings', 'send_mail')
     # Strings
     verbosity = config.get('Settings', 'verbosity')
+    # info_string = config.get('Settings', 'info_about_this_run')
     # Ints
     spillage_percentage = config.getfloat('Settings', 'spillage_percentage')
     iterations = config.getint('Settings', 'iterations')
@@ -234,14 +235,14 @@ if __name__ == "__main__":
         with open('Calliope_Hydro_config.conf') as file:
             lines = [line.split('#')[0].rstrip() for line in file if line.rstrip() != '']
         other_lines = f'\n[Other Infos]' \
-                      f"\nname of the results' directory:{results_dir_general} " \
-                      f'\nTime spent to run the script (days, h:m:s): {str(datetime.timedelta(seconds=elapsed))}' \
-                      f'\nCalliope_Hydro.py was executed with "PyCharm debugger" ' \
+                      f"\n- name of the results' directory:{results_dir_general} " \
+                      f'\n- Time spent to run the script (days, h:m:s): {str(datetime.timedelta(seconds=elapsed))}' \
+                      f'\n- Calliope_Hydro.py was executed with "PyCharm debugger" ' \
                       f'(if "False" the script was just "run", without the debugger): ' \
                       f'{True if sys.gettrace() else False}' \
-                      f'\nSystem which run the script: {platform.uname()}' \
-                      f'\n(Guess on the system which run the script: ' \
-                      f'{"work station SESAM" if platform.uname()[1] == "DESKTOP-GBUU047" else "NOT work station SESAM"})'
+                      f'\n- System which run the script: {platform.uname()}' \
+                      f'\n- (Guess on the system which run the script: ' \
+                      f'{"work station SESAM" if platform.uname()[1] == "DESKTOP-GBUU047" else "PC di fausto" if platform.uname()[1] == "DESKTOP-OT2LRRI" else "System unknown"})'
         nl = '\n'
     if save_settings:
         with open(f'{results_dir_general}/Settings.txt', 'w') as outfile:

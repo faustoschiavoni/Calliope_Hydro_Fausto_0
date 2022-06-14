@@ -58,7 +58,7 @@ def to_excel(model_data, path='Results', excel_name='Results(non time-varying).x
 
 
 # Fa
-def plot_storage(model_data, lslice=None, rslice=None, show_storage_cap_max=True, frmt='svg', show=False, save=True,
+def plot_storage(model_data, lslice=None, rslice=None, show_storage_cap_max=True, frmt='png', show=False, save=True,
                  path='Results', exist_ok=True, show_spillage_line=True, spillage_coeff=0.95, create_subplots=True,
                  show_subs=False):
     # TODO: check if 'storage' is present, otherwise don't even plot
@@ -155,7 +155,7 @@ def plot_storage(model_data, lslice=None, rslice=None, show_storage_cap_max=True
 
 
 # Fa
-def plot_storage_and_carriers_and_eff(model_data, lslice=None, rslice=None, frmt='svg', save=True, path='Results',
+def plot_storage_and_carriers_and_eff(model_data, lslice=None, rslice=None, frmt='png', save=True, path='Results',
                                       exist_ok=True, spillage_coeff=0.95, show=False, sharexaxis=True):
     plt.rcParams['axes.grid'] = True
     plt.rc('grid', color='#686868', linestyle='--', linewidth=0.5)
@@ -205,7 +205,10 @@ def plot_storage_and_carriers_and_eff(model_data, lslice=None, rslice=None, frmt
         lines2d_2.append(carrier_prod.rename('').plot(color=colors_2[1], ax=axes.flatten()[plot_index], label='Carrier_prod')[0])
         y_min_prod, y_max_prod = carrier_prod.min().values, carrier_prod.max().values
 
-        rescaled_unitary_eff = (max(y_max_con, y_max_prod) + min(y_min_con, y_min_prod)) / 2
+        if abs(max(y_max_con, y_max_prod)) != abs(min(y_min_con, y_min_prod)):
+            rescaled_unitary_eff = (max(y_max_con, y_max_prod) + min(y_min_con, y_min_prod)) / 2
+        else:
+            rescaled_unitary_eff = min(y_min_con, y_min_prod) / 2
         tech_eff *= rescaled_unitary_eff
         lines2d_2.append(tech_eff.rename('').plot(color=eff_color, ax=axes.flatten()[plot_index], label='Eff_scaled',
                                                   markersize=markersize_eff, linestyle='', marker='*')[0])

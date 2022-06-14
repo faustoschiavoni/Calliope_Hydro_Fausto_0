@@ -122,7 +122,8 @@ techs:
                 energy_cap_equals: 100000000000 #fake capacità per essere sicuri che riesca ad elaborare tutta l'acqua
            costs:
                 monetary:
-                     om_con: 0.01
+                     om_con: 5e15
+                     om_prod: -5e15
 
 
 #Kafue Gorge
@@ -195,7 +196,8 @@ techs:
                 energy_cap_equals: 100000000000
            costs:
                 monetary:
-                     om_con: 0.01
+                     om_con: 5e15
+                     om_prod: -5e15
 
 #Kariba
       supply_waterC:
@@ -266,9 +268,10 @@ techs:
                 energy_cap_equals: 100000000000
            costs:
                 monetary:
-                     om_con: 0.01
- 
-#Cahora
+                     om_con: 5e15
+                     om_prod: -5e15
+
+     #Cahora
 
       supply_waterD:
            essentials:
@@ -325,7 +328,8 @@ techs:
                 energy_cap_equals: 100000000000
            costs:
                 monetary:
-                     om_con: 0.01
+                     om_con: 5e15
+                     om_prod: -5e15
 
  
       # storage3: #necessario? forse no, sicuramente serve uba water demand3

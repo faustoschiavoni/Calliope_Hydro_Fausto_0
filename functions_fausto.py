@@ -154,7 +154,7 @@ def get_latest_file_or_folder_from_directory(directory: str, last=-1):
     return latest_folder
 
 
-def apply_plot_function_to_all_results():
+def apply_plot_function_to_all_results(**kwargs):
     import calliope
     from plotting_fausto import plotting
     import glob
@@ -164,12 +164,26 @@ def apply_plot_function_to_all_results():
         if folders != 'Results\\results_debug':  # excluding the results_debug folder
             for folder in glob.glob(f'{folders}/*'):
                 (all_results.append(folder) if folder[-4:] != '.txt' else None)
-
     for result in all_results:
         model = calliope.read_netcdf(f'{result}\\model.nc')
         plots_folder = f'{result}\\plots\\'
 
-        plotting.FaPlotting(model).plot_storage_and_carriers(path=plots_folder)
+        plotting.FaPlotting(model).plot_storage_and_carriers(path=plots_folder, frmt='png')
+        # plotting.FaPlotting(model).plot_storage_and_carriers(kwargs, path=plots_folder,)
+        # break
+
+
+def apply_function_to_one_result():
+    from plotting_fausto import plotting
+    import calliope
+    import glob
+    import os
+
+    for folders in glob.glob('Results\\results_20220517-231045\\*'):
+        if os.path.isdir(folders):
+            model = calliope.read_netcdf(folders + '\\model.nc')
+            plots_folder = f'{folders}\\plots'
+            plotting.FaPlotting(model).plot_storage_and_carriers(path=plots_folder, frmt='png')
 
 
 def compare_multiple_calliope_models(*args):
