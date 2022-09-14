@@ -55,6 +55,7 @@ if __name__ == "__main__":
         results_dir_general = f"Results/results_{time.strftime('%Y%m%d-%H%M%S')}_nospillage"
     else:
         results_dir_general = f"Results/results_{time.strftime('%Y%m%d-%H%M%S')}"
+
     for iteration in range(iterations):
         print(f'\n\nIteration {iteration + 1} of {iterations} (time: {time.strftime("%H:%M:%S")}).\n')
 
@@ -249,4 +250,4 @@ if __name__ == "__main__":
             outfile.write(f'{nl.join(lines)}{other_lines}')
     if send_mail:
         notify_via_email(f'{nl.join(lines)}{other_lines}')
-    print(f'\n\nFinished at: {time.strftime("%H:%M:%S")}; elapsed time: {str(datetime.timedelta(seconds=elapsed))}')
+    print(f'\n\nFinished at: {time.strftime("%H:%M:%S")}; elapsed time ___: {str(datetime.timedelta(seconds=elapsed))}')
